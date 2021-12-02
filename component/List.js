@@ -6,9 +6,11 @@ import { Text,
   Alert,
   TouchableOpacity,
   StyleSheet,
+  Image,
 } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
-import LanguagesModal from './LanguagesModal';
+import LanguagesModal from './LanguagesModal'
+import { Card, ListItem, Button, Icon } from 'react-native-elements'
 
 const List = () => {
   const [countries, setCountries] = useState()
@@ -24,7 +26,7 @@ const List = () => {
     <ActivityIndicator />
   }
 
-  // console.log(countries)
+  console.log(countries)
   return (
     <>
       {country &&
@@ -32,10 +34,6 @@ const List = () => {
           animationType="slide"
           transparent={false}
           visible={country}
-          onRequestClose={() => {
-            Alert.alert("Modal closed")
-            setCountry(!country)
-          }}
         >
           <LanguagesModal country={country} />
           <TouchableOpacity 
@@ -48,9 +46,15 @@ const List = () => {
       }
       <FlatList 
         data={countries} 
+        // horizontal
         renderItem={({ item }) => (
           <Pressable onPress={() => setCountry(item)}>
-            <Text>{item.name}</Text>
+            <Card>
+              <Card.Title>
+                {item.name}
+              </Card.Title>
+              <Card.Image source={{uri: item.flag}}></Card.Image>
+            </Card>
           </Pressable>
         )}
       />

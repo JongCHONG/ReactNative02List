@@ -5,7 +5,7 @@ import { FlatList } from 'react-native-gesture-handler'
 const LanguagesModal = props => {
   const { country } = props
 
-  console.log(country.languages)
+  // console.log(country.languages)
   return (
     <>
       <FlatList 
