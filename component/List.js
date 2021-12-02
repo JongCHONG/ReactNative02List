@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, ActivityIndicator, Pressable, Modal, Alert } from 'react-native'
+import { Text, 
+  ActivityIndicator, 
+  Pressable, 
+  Modal, 
+  Alert,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 import LanguagesModal from './LanguagesModal';
 
 const List = () => {
   const [countries, setCountries] = useState()
-  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [country, setCountry] = useState(null)
 
   useEffect(() => {
     fetch('https://restcountries.com/v2/all')
@@ -17,35 +24,46 @@ const List = () => {
     <ActivityIndicator />
   }
 
-  const Country = ({ item }) => {
-    return (
-      <>
+  // console.log(countries)
+  return (
+    <>
+      {country &&
         <Modal
           animationType="slide"
           transparent={false}
-          visible={isModalVisible}
+          visible={country}
           onRequestClose={() => {
             Alert.alert("Modal closed")
-            setIsModalVisible(!isModalVisible)
+            setCountry(!country)
           }}
         >
-          <LanguagesModal lang={item.languages} />
-          <Pressable onPress={() => setIsModalVisible(!isModalVisible)}>
+          <LanguagesModal country={country} />
+          <TouchableOpacity 
+            style={styles.button}
+            onPress={() => setCountry(!country)}
+          >
             <Text>Hide Modal</Text>
-          </Pressable>
+          </TouchableOpacity>
         </Modal>
-
-        <Pressable onPress={() => setIsModalVisible(true)}>
-          <Text>{item.name}</Text>
-        </Pressable>
-      </>
-    )
-  }
-
-  // console.log(countries)
-  return (
-    <FlatList data={countries} renderItem={Country}></FlatList>
+      }
+      <FlatList 
+        data={countries} 
+        renderItem={({ item }) => (
+          <Pressable onPress={() => setCountry(item)}>
+            <Text>{item.name}</Text>
+          </Pressable>
+        )}
+      />
+    </>
   )
 }
 
 export default List
+
+const styles = StyleSheet.create({
+  button: {
+    alignItems: "center",
+    backgroundColor: "#DDDDDD",
+    padding: 10
+  },
+})
