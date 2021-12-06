@@ -34,7 +34,7 @@ const List = () => {
     return (
       <Text>
         Erreur de chargement.
-      </Text>>
+      </Text>
     )
   }
 
